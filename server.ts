@@ -203,6 +203,9 @@ async function sendEmailOtp(otp: string): Promise<'gateway' | 'server_console'> 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: { user: gmailUser, pass: gmailPass },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
     });
     await transporter.sendMail({
       from: `"SHOPNEXA Security" <${gmailUser}>`,
@@ -228,6 +231,9 @@ async function sendEmailOtp(otp: string): Promise<'gateway' | 'server_console'> 
         user: process.env.SMTP_USER.trim(),
         pass: process.env.SMTP_PASS.trim(),
       },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
     });
     await transporter.sendMail({
       from: `"SHOPNEXA Security" <${process.env.SMTP_USER.trim()}>`,

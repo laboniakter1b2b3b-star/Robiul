@@ -80,9 +80,15 @@ export function AdminLoginModal({ onSuccess, onBackToStore }: AdminLoginModalPro
           email: normalizedEmail,
         }),
       });
-      const data = await res.json();
+      const rawText = await res.text();
+      let data: Record<string, any> = {};
+      try {
+        data = rawText ? JSON.parse(rawText) : {};
+      } catch {
+        data = {};
+      }
       if (!res.ok) {
-        setError(data.error || 'লগইন তথ্য সঠিক নয়।');
+        setError(data.error || `সার্ভার রেসপন্স পাওয়া যায়নি (কোড: ${res.status})। কিছুক্ষণ পর আবার চেষ্টা করুন।`);
         return;
       }
       setChallengeToken(data.challengeToken);
@@ -116,7 +122,13 @@ export function AdminLoginModal({ onSuccess, onBackToStore }: AdminLoginModalPro
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ challengeToken, otp: otp.trim() }),
       });
-      const data = await res.json();
+      const rawText = await res.text();
+      let data: Record<string, any> = {};
+      try {
+        data = rawText ? JSON.parse(rawText) : {};
+      } catch {
+        data = {};
+      }
       if (!res.ok) {
         setError(data.error || 'OTP কোডটি সঠিক নয়।');
         return;
@@ -139,7 +151,13 @@ export function AdminLoginModal({ onSuccess, onBackToStore }: AdminLoginModalPro
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ challengeToken }),
       });
-      const data = await res.json();
+      const rawText = await res.text();
+      let data: Record<string, any> = {};
+      try {
+        data = rawText ? JSON.parse(rawText) : {};
+      } catch {
+        data = {};
+      }
       if (!res.ok) {
         setError(data.error || 'নতুন OTP পাঠানো যায়নি।');
         return;
